@@ -15,6 +15,18 @@ async def on_ready():
 async def ping(ctx):
     await ctx.send("pong!")
 
+@bot.command(aliases=["clear", "poof"])
+async def purge(ctx, limit):
+    await ctx.purge(limit=int(limit))
+    messages_or_message = "messages" if int(limit) > 1 or int(limit) == 0 else "messages"
+    messages = [
+        f"I guess I'll have to search for the {messages_or_message} somewhere else...",
+        f"{limit}_{messages_or_message} left the game.",
+        f"{limit} {messages_or_message} went to go play an obby.",
+        f"{limit} {messages_or_message} went to explore the endless wonders of No Man's Sky!"
+    ]
+    await ctx.send(choice(messages))
+
 @bot.command(aliases=["game"])
 async def randomgame(ctx):
     normal_games = [
