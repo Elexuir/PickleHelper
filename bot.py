@@ -17,7 +17,7 @@ async def ping(ctx):
 
 @bot.command(aliases=["clear", "poof"])
 async def purge(ctx, limit):
-    await ctx.channel.purge(limit=int(limit))
+    await ctx.channel.purge(limit=(int(limit) + 1))
     messages_or_message = "messages" if int(limit) > 1 or int(limit) == 0 else "messages"
     messages = [
         f"I guess I'll have to search for the {messages_or_message} somewhere else...",
