@@ -1,7 +1,8 @@
 import os
+import discord
 from discord.ext import commands
 
-bot = commands.Bot(command_prefix="!")
+bot = commands.Bot(command_prefix="!", intents=discord.Intents.all())
 TOKEN = os.environ.get("SECRET_TOKEN")
 
 @bot.event
