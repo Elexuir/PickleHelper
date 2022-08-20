@@ -1,15 +1,32 @@
+from itertools import cycle
 import os
 from random import choice
 import discord
-from discord.ext import commands
+from discord.ext import commands, tasks
 
 bot = commands.Bot(command_prefix="!", intents=discord.Intents.all())
 TOKEN = os.environ.get("SECRET_TOKEN")
 games = []
+songs = [
+    "xylo | afterlife [slowed down]",
+    "Wanna break from the ads? X Quarto de Hotel - Hareton Salvanini",
+    "Sleepwalk - New Stero Mix 2021"
+]
+titles = cycle([ ["playing", "a game of soccer"], ["watching", "a video on youtube"], ["listening", choice(songs)] ])
+
+# --- BOT EVENTS ---
 
 @bot.event
 async def on_ready():
     print("Logged into bot 'The-Pickle-Helper'!")
+    await appearance.start()
+
+@tasks.loop(minutes=1)
+async def appearance():
+    status = next(titles)
+    await bot.change_presence(status=discord.Status.idle, activity=discord.Activity(type=discord.ActivityType[status[0]], name=status[1]))
+
+# --- BOT COMMANDS ---
 
 @bot.command()
 async def ping(ctx):
@@ -51,15 +68,17 @@ async def randomgame(ctx):
     
     prefixes = [
         { "HORROR": [
-                f"A horrifyingly good game called {horrorGame}",
-                f"Have a great time! Looks like you'll be playing... {horrorGame}",
-                f"You're bound to scream while you play {horrorGame}!"
+                f"Let's play a horrifyingly good game called {horrorGame}!",
+                f"Have a great time! Looks like you'll be playing... {horrorGame}!",
+                f"You're bound to scream while you play {horrorGame}!",
+                f"I'm too scared there, the game is called {horrorGame}."
             ]
         },
         { "NORMAL": [
-                f"This is a beautiful game, {normalGame}!",
-                f"Oh nice enjoy your time while playing {normalGame}!",
-                f"I'm jealous, guess you're playing {normalGame}!"
+                f"{normalGame} is such a beautiful game!",
+                f"Oh nice, enjoy your time while playing {normalGame}!",
+                f"I'm jealous, guess you're playing {normalGame}!",
+                f"Have a great time while you're in {normalGame}!"
             ]
         }
     ]
